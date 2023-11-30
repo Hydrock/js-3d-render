@@ -1,25 +1,31 @@
+// Первый вид сверху
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
+// Второй вид перспектива
 const viewCanvas = document.getElementById('viewCanvas');
 const viewCtx = viewCanvas.getContext('2d');
 
-// Размеры карты
-const mapWidth = 20; // Количество ячеек по горизонтали
-const mapHeight = 20; // Количество ячеек по вертикали
-
-// Расчет размера одной ячейки
-const tileSize = canvas.width / mapWidth;
-
+// Позиция игрока
 let player = { x: 400, y: 300, angle: 0 };
+
+// Нажатые клавиши
 let keys = { left: false, right: false, up: false, down: false };
 
-// Создаем карту
+// Карта
 const map = [
     "********************",
     "*------------------*",
     "*------------------*",
     "*---------**-------*",
+    "*------------***---*",
+    "*------------------*",
+    "*------------------*",
+    "*------------------*",
+    "*******-----***----*",
+    "*------------------*",
+    "*------------------*",
+    "*------------------*",
     "*------------***---*",
     "*------------------*",
     "*------****--------*",
@@ -32,9 +38,13 @@ const map = [
 const tileSizeX = canvas.width / map[0].length;
 const tileSizeY = canvas.height / map.length;
 
+// Рисование карты сверху
 function drawMap() {
+    // Перебираем карту по высоте
     for (let y = 0; y < map.length; y++) {
+        // Перебираем карту по ширине
         for (let x = 0; x < map[y].length; x++) {
+            // Для кадждого тайла проверяем - если он равен * то рисуем серым
             if (map[y][x] === '*') {
                 ctx.fillStyle = 'gray';
                 ctx.fillRect(x * tileSizeX, y * tileSizeY, tileSizeX, tileSizeY);
@@ -43,6 +53,7 @@ function drawMap() {
     }
 }
 
+// Рисуем игрока
 function drawPlayer() {
     ctx.fillStyle = 'yellow';
     ctx.beginPath();
@@ -54,6 +65,7 @@ function drawPlayer() {
     ctx.lineTo(player.x + 20 * Math.cos(player.angle), player.y + 20 * Math.sin(player.angle));
     ctx.stroke();
 }
+
 function updatePlayer() {
     if (keys.left) player.angle -= 0.02;
     if (keys.right) player.angle += 0.02;
